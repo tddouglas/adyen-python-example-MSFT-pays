@@ -9,9 +9,10 @@ from .main.redirect import handle_shopper_redirect
 from .main.additional_details import get_payment_details
 import app.main.config as config
 
+
 # Fusion Application Factory
 def create_app():
-    app = Flask('app')
+    app = Flask('app') # TODO: Make sure to configure `FLASK_RUN_CERT=adhoc` environment variable in run settings to serve over HTTPS
 
     # Register 404 handler
     app.register_error_handler(404, page_not_found)

@@ -1,32 +1,31 @@
 {% extends "layout.html" %}
 {% block content %}
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet"
-        href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/4.1.0/adyen.css"
-        integrity="sha384-+CPzBNZVkBXu4uXDECnVuVQ24Kl8vWrR61UzuuuUj5IBEP//BQ0G0KDNfz2iPcvJ"
-        crossorigin="anonymous">
+          href="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/4.7.0/adyen.css"
+          integrity="sha384-dkJjySvUD62j8VuK62Z0VF1uIsoa+APxWLDHpTjBRwQ95VxNl7oaUvCL+5WXG8lh"
+          crossorigin="anonymous">
 
-	<div id="payment-page">
-		<div class="container">
-			<div class="checkout-component-container">
+    <div id="payment-page">
+        <div class="container">
+            <div class="checkout-component-container">
 
-				<div id="component" class="payment">
-					<!-- Component will be rendered here -->
-				</div>
+                <div id="component" class="payment">
+                    <!-- Component will be rendered here -->
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 
-    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/4.1.0/adyen.js"
-        integrity="sha384-3tEepwhhMcyxgIbL3HBe3I59BpSMNyKoNrbKWARYH1tJ7K7K6NdTDqOltKlwiVsH"
-        crossorigin="anonymous"></script>
+    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/4.7.0/adyen.js"
+            integrity="sha384-Hmnh/5ShP0Q8iCjGV2U/6XFi7jiiFys4fsh7UrCH1JT1PV1ThZ9czMnbbyjzxuhU"
+            crossorigin="anonymous"></script>
+    <script id="client-key" type="application/json">{{ client_key|tojson }}</script>
+    <script id="integration-type" type="application/json">{{ method|tojson }}</script>
 
-	<script id="client-key" type="application/json">{{ client_key|tojson }}</script>
-	<script id="integration-type" type="application/json">{{ method|tojson }}</script>
-
-	<script src="{{ url_for('static', filename='js/adyen-implementation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/adyen-implementation.js') }}"></script>
 {% endblock %}

@@ -15,9 +15,16 @@ async function initCheckout() {
 					showImage: true
 				},
 				card: {
-					hasHolderName: true,
-					holderNameRequired: true,
+					// hasHolderName: true,
+					// holderNameRequired: true,
 					name: "Credit or debit card",
+					// billingAddressRequired: true,
+					// data: {
+					// 	billingAddress: {
+					// 		countryCode: "US"
+					// 	}
+					// },
+					// showPostalCodeField: true,
 					amount: {
 						value: 1000,
 						currency: "EUR"
@@ -68,7 +75,10 @@ function filterUnimplemented(pm) {
 			"klarna",
 			"klarna_account",
 			"paypal",
-			"boletobancario_santander"
+			"boletobancario_santander",
+			"applepay",
+			"bcmc",
+			"bcmc_mobile"
 		].includes(it.type)
 	);
 	return pm;
