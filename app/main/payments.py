@@ -149,6 +149,8 @@ def choose_currency(payment_method):
         return "PLN"
     elif payment_method == "boletobancario":
         return "BRL"
+    elif payment_method == "kcp_naverpay":
+        return "KRW"
     elif payment_method == "ach" or payment_method == "paypal" or payment_method == "afterpaytouch":
         return "USD"
     else:

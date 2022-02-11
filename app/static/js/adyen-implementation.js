@@ -82,7 +82,8 @@ function filterUnimplemented(pm) {
             "boletobancario_santander",
             "applepay",
             "bcmc",
-            "bcmc_mobile"
+            "bcmc_mobile",
+            'kcp_naverpay'
         ].includes(it.type)
     );
     return pm;
