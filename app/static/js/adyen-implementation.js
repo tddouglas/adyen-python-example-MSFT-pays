@@ -68,7 +68,8 @@ function filterUnimplemented(pm) {
 			"klarna",
 			"klarna_account",
 			"paypal",
-			"boletobancario_santander"
+			"boletobancario_santander",
+			"afterpaytouch"
 		].includes(it.type)
 	);
 	return pm;
