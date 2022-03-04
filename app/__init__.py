@@ -85,6 +85,11 @@ def create_app():
     def checkout_error():
         return render_template('checkout-failed.html')
 
+    @app.route('/notifications', methods=['POST', 'OPTIONS'])
+    def notification():
+        print(f"Request received {request.data} {request.json} {request.values}")
+        return "{accepted}"
+
     @app.route('/favicon.ico')
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static'),
