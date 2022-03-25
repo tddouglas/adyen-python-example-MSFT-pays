@@ -64,6 +64,7 @@ def adyen_payments(frontend_request):
 		'countryCode': 'NL',
 		'shopperLocale': "en_NL",
 		'storePaymentMethod': 'true',
+		'captureDelayHours': 0,
 		'merchantAccount': config.merchant_account
 	}
 	payments_request.update(payment_info)
