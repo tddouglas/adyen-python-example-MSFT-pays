@@ -10,6 +10,17 @@ async function initCheckout() {
 			locale: "en_US",
 			environment: "test",
 			showPayButton: true,
+            amount: {
+			    currency: "EUR",
+                amount: 1000
+            },
+            countryCode: "NL",
+            totalPriceStatus: "final",
+            totalPriceLabel: "totalPrice",
+            configuration: {
+			    merchantName: "JRKSInc_AwayECOM",
+                merchantId: "000000000202845"
+            },
 			paymentMethodsConfiguration: {
 				ideal: {
 					showImage: true
@@ -52,7 +63,7 @@ async function initCheckout() {
 			}
 		};
 
-		const checkout = new AdyenCheckout(configuration);
+		const checkout = await AdyenCheckout(configuration);
 		checkout.create(type).mount("#component");
 	} catch (error) {
 		console.error(error);
