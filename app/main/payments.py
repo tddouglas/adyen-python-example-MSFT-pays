@@ -74,6 +74,7 @@ def adyen_payments(frontend_request):
 
 	elif 'klarna' in txvariant:
 		payments_request['shopperEmail'] = "myEmail@adyen.com"
+		payments_request['telephoneNumber'] = "+31689124321"
 		payments_request['lineItems'] = [
 			{
 				'quantity': "1",
