@@ -9,18 +9,22 @@ async function initCheckout() {
             clientKey,
             locale: "en_US",
             environment: "test",
-            onSubmit: (state, component) => {
-                console.log(state);
+            // onSubmit: (state, component) => {
+            //     console.log(state);
+            //     if (state.isValid) {
+            //         handleSubmission(state, component, "/api/initiatePayment");
+            //     }
+            // },
+            onAdditionalDetails: (state, component) => {
+                console.log("OnAdditionalDetails triggered", state);
+                handleSubmission(state, component, "/api/submitAdditionalDetails");
+            },
 
+            onChange: (state, component) => {
+                console.log("On change triggered", component);
                 if (state.isValid) {
                     handleSubmission(state, component, "/api/initiatePayment");
                 }
-            },
-            onAdditionalDetails: (state, component) => {
-                handleSubmission(state, component, "/api/submitAdditionalDetails");
-            },
-            onChange: (state, component) => {
-                console.log("On change", state);
             }
         };
 
