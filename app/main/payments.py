@@ -109,6 +109,9 @@ def adyen_payments(frontend_request):
 	elif txvariant == 'ach' or txvariant == 'paypal':
 		payments_request['countryCode'] = 'US'
 
+	elif txvariant == 'twint':
+		del payments_request['countryCode']
+
 	print("/payments request:\n" + str(payments_request))
 
 	payments_response = adyen.checkout.payments(payments_request)
@@ -125,6 +128,8 @@ def choose_currency(payment_method):
 		return "PLN"
 	elif payment_method == "boletobancario":
 		return "BRL"
+	elif payment_method == "twint":
+		return "CHF"
 	elif payment_method == "ach" or payment_method == "paypal":
 		return "USD"
 	else:
