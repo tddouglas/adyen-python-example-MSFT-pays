@@ -40,9 +40,6 @@ async function initCheckout() {
                     handleSubmission(state, component, "/api/initiatePayment");
                 }
             },
-            onBinLookup: (state) => {
-                console.log("onBinLookup Triggered", state);
-            },
             onAdditionalDetails: (state, component) => {
                 handleSubmission(state, component, "/api/submitAdditionalDetails");
             }
@@ -52,7 +49,16 @@ async function initCheckout() {
         checkout.create(type, {
             onBinLookup: (state) => {
                 console.log("onBinLookup Triggered", state);
-            }
+            },
+            onBinValue: (state) => {
+                console.log("onBinValue Triggered", state);
+            },
+            onFieldValid: (state) => {
+                console.log("onFieldValid Triggered", state);
+            },
+            onBrand: (state) => {
+                console.log("onBrand Triggered", state);
+            },
         }).mount("#component");
     } catch (error) {
         console.error(error);
