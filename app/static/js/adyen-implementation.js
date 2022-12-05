@@ -17,6 +17,8 @@ async function initCheckout() {
                 card: {
                     // hasHolderName: true,
                     // holderNameRequired: true,
+                    billingAddressRequired: true,
+                    billingAddressAllowedCountries: ['US'],
                     name: "Credit or debit card",
                     amount: {
                         value: 1000,
