@@ -17,7 +17,7 @@ async function initCheckout() {
                 card: {
                     onConfigSuccess: (component) => {
                         console.log("callback triggered");
-                        const activePM = dropin.dropinRef.state.activePaymentMethod;
+                        const activePM = dropin.componentRef;
                         if (activePM.props.type === 'card') {
                             activePM.setFocusOn('encryptedCardNumber');
                         }
