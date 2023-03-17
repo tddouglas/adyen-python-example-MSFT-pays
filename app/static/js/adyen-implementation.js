@@ -14,11 +14,17 @@ async function initCheckout() {
                 ideal: {
                     showImage: true
                 },
+                ach: {
+                    enableStoreDetails: true,
+                    showStoredPaymentMethods: true,
+                },
                 card: {
                     // hasHolderName: true,
                     // holderNameRequired: true,
-                    billingAddressRequired: true,
-                    billingAddressAllowedCountries: ['US'],
+                    // billingAddressRequired: true,
+                    // billingAddressAllowedCountries: ['US'],
+                    showStoredPaymentMethods: true,
+                    enableStoreDetails: true,
                     name: "Credit or debit card",
                     amount: {
                         value: 1000,

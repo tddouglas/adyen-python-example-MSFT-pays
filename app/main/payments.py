@@ -59,7 +59,7 @@ def adyen_payments(frontend_request):
 		},
 		'channel': 'Web',
 		'reference': order_ref,
-		'shopperReference': "Python Checkout Shopper",
+		'shopperReference': "Python Checkout Shopper1",
 		'returnUrl': "http://localhost:8080/api/handleShopperRedirect?orderRef=" + order_ref,
 		'countryCode': 'NL',
 		'shopperLocale': "en_NL",
@@ -108,6 +108,7 @@ def adyen_payments(frontend_request):
 
 	elif txvariant == 'ach' or txvariant == 'paypal':
 		payments_request['countryCode'] = 'US'
+		payments_request['storePaymentMethod'] = 'true'
 
 	elif txvariant == 'twint':
 		del payments_request['countryCode']

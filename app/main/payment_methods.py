@@ -19,7 +19,7 @@ def adyen_payment_methods():
     payment_methods_request = {
         'merchantAccount': config.merchant_account,
         'reference': 'Fusion paymentMethods call',
-        'shopperReference': 'Python Checkout Shopper',
+        'shopperReference': 'Python Checkout Shopper1',
         'channel': 'Web',
     }
     
