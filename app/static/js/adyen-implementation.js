@@ -10,6 +10,13 @@ async function initCheckout() {
             locale: "en_US",
             environment: "test",
             showPayButton: true,
+            // ApplePay specific config
+            totalPriceStatus: "final",
+            totalPriceLabel: "totalPrice",
+            configuration: {
+			    merchantName: "JRKSInc_AwayECOM",
+                merchantId: "000000000202845"
+            },
             paymentMethodsConfiguration: {
                 ideal: {
                     showImage: true
@@ -50,7 +57,6 @@ async function initCheckout() {
             },
             onSubmit: (state, component) => {
                 console.log(state);
-
                 if (state.isValid) {
                     handleSubmission(state, component, "/api/initiatePayment");
                 }
