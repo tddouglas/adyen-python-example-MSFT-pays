@@ -112,6 +112,7 @@ function filterUnimplemented(pm) {
             "bcmc",
             "bcmc_mobile",
             'kcp_naverpay',
+            "directdebit_GB",
             "afterpaytouch"
         ].includes(it.type)
     );

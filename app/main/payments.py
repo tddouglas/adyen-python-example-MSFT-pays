@@ -47,7 +47,6 @@ def adyen_payments(frontend_request):
     adyen = Adyen.Adyen()
     adyen.client.platform = 'test'
     adyen.client.xapikey = config.checkout_apikey
-
     payment_info = frontend_request.get_json()
     txvariant = payment_info["paymentMethod"]["type"]
     order_ref = str(uuid.uuid4())
@@ -122,6 +121,9 @@ def adyen_payments(frontend_request):
     elif txvariant == 'directEbanking' or txvariant == 'giropay':
         payments_request['countryCode'] = "DE"
 
+    elif txvariant == 'directdebit_GB':
+        payments_request['countryCode'] = 'GB'
+
     elif txvariant == 'bcmc_mobile':
         payments_request['countryCode'] = "BE"
 
@@ -159,6 +161,8 @@ def choose_currency(payment_method):
         return "BRL"
     elif payment_method == "twint":
         return "CHF"
+    elif payment_method == 'directdebit_GB':
+        return "GBP"
     elif payment_method == "kcp_naverpay":
         return "KRW"
     elif payment_method == "ach" or payment_method == "paypal" or payment_method == "afterpaytouch":
