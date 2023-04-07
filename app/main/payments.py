@@ -54,7 +54,7 @@ def adyen_payments(frontend_request):
 
     payments_request = {
         'amount': {
-            'value': 1000,
+            'value': 1500,
             'currency': choose_currency(txvariant)
         },
         'channel': 'Web',
@@ -74,6 +74,9 @@ def adyen_payments(frontend_request):
 
     elif 'klarna' in txvariant or 'afterpay' in txvariant:
         payments_request['shopperEmail'] = "myEmail@adyen.com"
+        payments_request['countryCode'] = 'US'
+        payments_request['shopperEmail'] = "tyler@adyen.com"
+        payments_request['telephoneNumber'] = "8054500677"
         payments_request['lineItems'] = [
             {
                 'quantity': "1",
@@ -115,6 +118,7 @@ def adyen_payments(frontend_request):
             "firstName": "Simon",
             "lastName": "Hopper"
         }
+
     elif txvariant == 'directEbanking' or txvariant == 'giropay':
         payments_request['countryCode'] = "DE"
 

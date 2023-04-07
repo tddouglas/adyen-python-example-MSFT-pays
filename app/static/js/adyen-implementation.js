@@ -111,7 +111,8 @@ function filterUnimplemented(pm) {
             "applepay",
             "bcmc",
             "bcmc_mobile",
-            'kcp_naverpay'
+            'kcp_naverpay',
+            "afterpaytouch"
         ].includes(it.type)
     );
     return pm;
