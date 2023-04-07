@@ -21,6 +21,7 @@ def adyen_payment_methods():
         'reference': 'Fusion paymentMethods call',
         'shopperReference': 'Python Checkout Shopper1',
         'channel': 'Web',
+
     }
     
     print("/paymentMethods request:\n" + str(payment_methods_request))

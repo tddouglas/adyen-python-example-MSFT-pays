@@ -26,6 +26,13 @@ async function initCheckout() {
                     showStoredPaymentMethods: true,
                     enableStoreDetails: true,
                     name: "Credit or debit card",
+                    onConfigSuccess: (component) => {
+                        console.log("callback triggered");
+                        const activePM = dropin.componentRef;
+                        if (activePM.props.type === 'card') {
+                            activePM.setFocusOn('encryptedCardNumber');
+                        }
+                    },
                     amount: {
                         value: 1000,
                         currency: "EUR"
@@ -67,6 +74,10 @@ async function initCheckout() {
             onBrand: (state) => {
                 console.log("onBrand Triggered", state);
             },
+            // Set focus immediately to encryptedCardNumber field
+            onSelect: comp => {
+                    comp?.setFocusOn?.('encryptedCardNumber');
+            }
         }).mount("#component");
     } catch (error) {
         console.error(error);
@@ -90,7 +101,11 @@ function filterUnimplemented(pm) {
             "klarna_account",
             "paypal",
             "boletobancario_santander",
-            "twint"
+            "twint",
+            "applepay",
+            "bcmc",
+            "bcmc_mobile",
+            'kcp_naverpay'
         ].includes(it.type)
     );
     return pm;

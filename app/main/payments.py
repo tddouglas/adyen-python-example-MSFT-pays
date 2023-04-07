@@ -44,94 +44,120 @@ Returns JSON representation of response
 
 
 def adyen_payments(frontend_request):
-	adyen = Adyen.Adyen()
-	adyen.client.platform = 'test'
-	adyen.client.xapikey = config.checkout_apikey
+    adyen = Adyen.Adyen()
+    adyen.client.platform = 'test'
+    adyen.client.xapikey = config.checkout_apikey
 
-	payment_info = frontend_request.get_json()
-	txvariant = payment_info["paymentMethod"]["type"]
-	order_ref = str(uuid.uuid4())
+    payment_info = frontend_request.get_json()
+    txvariant = payment_info["paymentMethod"]["type"]
+    order_ref = str(uuid.uuid4())
 
-	payments_request = {
-		'amount': {
-			'value': 1000,
-			'currency': choose_currency(txvariant)
-		},
-		'channel': 'Web',
-		'reference': order_ref,
-		'shopperReference': "Python Checkout Shopper1",
-		'returnUrl': "http://localhost:8080/api/handleShopperRedirect?orderRef=" + order_ref,
-		'countryCode': 'NL',
-		'shopperLocale': "en_NL",
-		'storePaymentMethod': 'true',
-		'captureDelayHours': 0,
-		'merchantAccount': config.merchant_account
-	}
-	payments_request.update(payment_info)
+    payments_request = {
+        'amount': {
+            'value': 1000,
+            'currency': choose_currency(txvariant)
+        },
+        'channel': 'Web',
+        'reference': order_ref,
+        'shopperReference': "Python Checkout Shopper1",
+        'returnUrl': "http://localhost:8080/api/handleShopperRedirect?orderRef=" + order_ref,
+        'countryCode': 'NL',
+        'shopperLocale': "en_NL",
+        'storePaymentMethod': 'true',
+        'captureDelayHours': 0,
+        'merchantAccount': config.merchant_account
+    }
+    payments_request.update(payment_info)
 
-	if txvariant == 'alipay':
-		payments_request['countryCode'] = 'CN'
+    if txvariant == 'alipay':
+        payments_request['countryCode'] = 'CN'
 
-	elif 'klarna' in txvariant:
-		payments_request['shopperEmail'] = "myEmail@adyen.com"
-		payments_request['telephoneNumber'] = "+31689124321"
-		payments_request['lineItems'] = [
-			{
-				'quantity': "1",
-				'amountExcludingTax': "450",
-				'taxPercentage': "1111",
-				'description': "Sunglasses",
-				'id': "Item #1",
-				'taxAmount': "50",
-				'amountIncludingTax': "500",
-				'taxCategory': "High"
-			},
-			{
-				'quantity': "1",
-				'amountExcludingTax': "450",
-				'taxPercentage': "1111",
-				'description': "Headphones",
-				'id': "Item #2",
-				'taxAmount': "50",
-				'amountIncludingTax': "500",
-				'taxCategory': "High"
-			}]
-	elif txvariant == 'directEbanking' or txvariant == 'giropay':
-		payments_request['countryCode'] = "DE"
+    elif 'klarna' in txvariant or 'afterpay' in txvariant:
+        payments_request['shopperEmail'] = "myEmail@adyen.com"
+        payments_request['lineItems'] = [
+            {
+                'quantity': "1",
+                'amountExcludingTax': "450",
+                'taxPercentage': "1111",
+                'description': "Sunglasses",
+                'id': "Item #1",
+                'taxAmount': "50",
+                'amountIncludingTax': "500",
+                'taxCategory': "High"
+            },
+            {
+                'quantity': "1",
+                'amountExcludingTax': "450",
+                'taxPercentage': "1111",
+                'description': "Headphones",
+                'id': "Item #2",
+                'taxAmount': "50",
+                'amountIncludingTax': "500",
+                'taxCategory': "High"
+            }]
+        payments_request["billingAddress"] = {
+            "street": "Pennsylvania Ave",
+            "city": "Washington D.C.",
+            "country": "US",
+            "stateOrProvince": "NA",
+            "houseNumberOrName": "1600",
+            "postalCode": "20500"
+        }
+        payments_request["deliveryAddress"] = {
+            "street": "Pennsylvania Ave",
+            "city": "Washington D.C.",
+            "country": "US",
+            "stateOrProvince": "NA",
+            "houseNumberOrName": "1600",
+            "postalCode": "20500"
+        }
+        payments_request["shopperName"] = {
+            "firstName": "Simon",
+            "lastName": "Hopper"
+        }
+    elif txvariant == 'directEbanking' or txvariant == 'giropay':
+        payments_request['countryCode'] = "DE"
 
-	elif txvariant == 'dotpay':
-		payments_request['countryCode'] = "PL"
+    elif txvariant == 'bcmc_mobile':
+        payments_request['countryCode'] = "BE"
 
-	elif txvariant == 'scheme':
-		payments_request['additionalData'] = {"allow3DS2": "true"}
-		payments_request['origin'] = "http://localhost:8080"
+    elif txvariant == 'dotpay':
+        payments_request['countryCode'] = "PL"
 
-	elif txvariant == 'ach' or txvariant == 'paypal':
-		payments_request['countryCode'] = 'US'
-		payments_request['storePaymentMethod'] = 'true'
+    elif txvariant == 'twint':
+        del payments_request['countryCode']
 
-	elif txvariant == 'twint':
-		del payments_request['countryCode']
+    elif txvariant == 'scheme':
+        payments_request['additionalData'] = {"allow3DS2": "true"}
+        payments_request['origin'] = "http://localhost:8080"
 
-	print("/payments request:\n" + str(payments_request))
+    elif txvariant == 'ach' or txvariant == 'paypal':
+        payments_request['countryCode'] = 'US'
 
-	payments_response = adyen.checkout.payments(payments_request)
-	formatted_response = json.dumps((json.loads(payments_response.raw_response)))
+    if txvariant == 'afterpaytouch':
+        payments_request['amount']['value'] = 3700  # AfterPayTouch amount must be > $10 otherwise get invalid amount
 
-	print("/payments response:\n" + formatted_response)
-	return formatted_response
+    print("/payments request:\n" + str(payments_request))
+
+    payments_response = adyen.checkout.payments(payments_request)
+    formatted_response = json.dumps((json.loads(payments_response.raw_response)))
+
+    print("/payments response:\n" + formatted_response)
+    return formatted_response
 
 
 def choose_currency(payment_method):
-	if payment_method == "alipay":
-		return "CNY"
-	elif payment_method == "dotpay":
-		return "PLN"
-	elif payment_method == "boletobancario":
-		return "BRL"
-	elif payment_method == "twint":
-		return "CHF"
-	elif payment_method == "ach" or payment_method == "paypal":
-		return "USD"
-	else:
-		return "EUR"
+    if payment_method == "alipay":
+        return "CNY"
+    elif payment_method == "dotpay":
+        return "PLN"
+    elif payment_method == "boletobancario":
+        return "BRL"
+    elif payment_method == "twint":
+        return "CHF"
+    elif payment_method == "kcp_naverpay":
+        return "KRW"
+    elif payment_method == "ach" or payment_method == "paypal" or payment_method == "afterpaytouch":
+        return "USD"
+    else:
+        return "EUR"
