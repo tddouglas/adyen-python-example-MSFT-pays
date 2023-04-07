@@ -10,7 +10,6 @@
     <div id="payment-page">
         <div class="container">
             <div class="checkout-component-container">
-
                 {% if method == 'api_only' %}
                     <body>
                     <button id="pay-button" onclick="payClick()">Pay Here</button>
@@ -45,18 +44,33 @@
                         }
                     </script>
                 {% else %}
-                    <div id="component" class="payment">
-                        <!-- Component will be rendered here -->
-                    </div>
+                    {% if method == 'securedfields' %}
+                        <div id="component">
+                            <label>
+                                <span>Card number:</span>
+                                <span data-cse="encryptedCardNumber"></span>
+                            </label>
+                            <label>
+                                <span>Expiry date:</span>
+                                <span data-cse="encryptedExpiryDate"></span>
+                            </label>
+                            <label>
+                                <span>CVV/CVC:</span>
+                                <span data-cse="encryptedSecurityCode"></span>
+                            </label>
+                        </div>
+                    {% else %}
+                        <div id="component" class="payment">
+                            <!-- Component will be rendered here -->
+                        </div>
+                    {% endif %}
+                    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.25.0/adyen.js"
+                            crossorigin="anonymous"></script>
+                    <script id="client-key" type="application/json">{{ client_key|tojson }}</script>
+                    <script id="integration-type" type="application/json">{{ method|tojson }}</script>
+                    <script src="{{ url_for('static', filename='js/adyen-implementation.js') }}"></script>
                 {% endif %}
             </div>
         </div>
     </div>
-
-
-    <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.25.0/adyen.js"
-            crossorigin="anonymous"></script>
-    <script id="client-key" type="application/json">{{ client_key|tojson }}</script>
-    <script id="integration-type" type="application/json">{{ method|tojson }}</script>
-    <script src="{{ url_for('static', filename='js/adyen-implementation.js') }}"></script>
 {% endblock %}

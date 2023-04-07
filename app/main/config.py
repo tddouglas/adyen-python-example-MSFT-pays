@@ -11,7 +11,7 @@ checkout_apikey = ""
 client_key = ""
 supported_integrations = ['dropin', 'card', 'ideal', 'klarna', 'directEbanking', 'alipay', 'boletobancario',
                           'sepadirectdebit', 'dotpay', 'giropay', 'ach', 'paypal', 'applepay', 'afterpaytouch', 'bcmc',
-                          'bcmc_mobile', 'twint', 'directdebit_GB', 'api_only']
+                          'bcmc_mobile', 'twint', 'directdebit_GB', 'api_only', 'securedfields']
 
 
 def read_config():

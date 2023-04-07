@@ -14,7 +14,7 @@ async function initCheckout() {
             totalPriceStatus: "final",
             totalPriceLabel: "totalPrice",
             configuration: {
-			    merchantName: "JRKSInc_AwayECOM",
+                merchantName: "JRKSInc_AwayECOM",
                 merchantId: "000000000202845"
             },
             paymentMethodsConfiguration: {
@@ -62,12 +62,39 @@ async function initCheckout() {
                 }
             },
             onAdditionalDetails: (state, component) => {
+                console.log("OnAdditionalDetails triggered", state);
                 handleSubmission(state, component, "/api/submitAdditionalDetails");
-            }
+            },
+            // Only needed for securefields flow
+            // onChange: (state, component) => {
+            //     console.log("On change triggered", component);
+            //     if (state.isValid) {
+            //         handleSubmission(state, component, "/api/initiatePayment");
+            //     }
+            // }
         };
 
         const checkout = await AdyenCheckout(configuration);
         checkout.create(type, {
+            // Optional configuration
+            type: 'card',
+            // brands: ['mc', 'visa', 'amex', 'bcmc', 'maestro'],
+            // styles: {
+            //     error: {
+            //         color: 'red'
+            //     },
+            //     validated: {
+            //         color: 'green'
+            //     },
+            //     placeholder: {
+            //         color: '#d8d8d8',
+            //         fontWeight: "500"
+            //     }
+            // },
+            // Set focus immediately to encryptedCardNumber field
+            onSelect: comp => {
+                comp?.setFocusOn?.('encryptedCardNumber');
+            },
             onBinLookup: (state) => {
                 console.log("onBinLookup Triggered", state);
             },
@@ -79,10 +106,6 @@ async function initCheckout() {
             },
             onBrand: (state) => {
                 console.log("onBrand Triggered", state);
-            },
-            // Set focus immediately to encryptedCardNumber field
-            onSelect: comp => {
-                    comp?.setFocusOn?.('encryptedCardNumber');
             }
         }).mount("#component");
     } catch (error) {
@@ -113,7 +136,9 @@ function filterUnimplemented(pm) {
             "bcmc_mobile",
             'kcp_naverpay',
             "directdebit_GB",
-            "afterpaytouch"
+            "afterpaytouch",
+            "securedfields",
+            "afterpaytouch",
         ].includes(it.type)
     );
     return pm;
