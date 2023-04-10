@@ -53,7 +53,7 @@ def adyen_payments(frontend_request):
 
     payments_request = {
         'amount': {
-            'value': 1500,
+            'value': 1000,
             'currency': choose_currency(txvariant)
         },
         'channel': 'Web',

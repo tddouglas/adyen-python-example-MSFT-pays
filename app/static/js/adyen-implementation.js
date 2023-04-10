@@ -10,13 +10,6 @@ async function initCheckout() {
             locale: "en_US",
             environment: "test",
             showPayButton: true,
-            // ApplePay specific config
-            totalPriceStatus: "final",
-            totalPriceLabel: "totalPrice",
-            configuration: {
-                merchantName: "JRKSInc_AwayECOM",
-                merchantId: "000000000202845"
-            },
             paymentMethodsConfiguration: {
                 ideal: {
                     showImage: true
@@ -24,6 +17,27 @@ async function initCheckout() {
                 ach: {
                     enableStoreDetails: true,
                     showStoredPaymentMethods: true,
+                },
+                applepay: {
+                    totalPriceStatus: "final",
+                    totalPriceLabel: "totalPrice",
+                    configuration: {
+                        merchantName: "Tyler Douglas",
+                        merchantId: "tylerDouglas"
+                    },
+                },
+                googlepay: {
+                    amount: {
+                        value: 1000,
+                        currency: "EUR"
+                    },
+                    countryCode: "NL",
+                    //Set this to PRODUCTION when you're ready to accept live payments
+                    environment: "TEST",
+                    configuration: {
+                        merchantName: "Tyler Douglas",
+                        gatewayMerchantId: "TylerDouglas"
+                    }
                 },
                 card: {
                     // hasHolderName: true,
@@ -34,11 +48,7 @@ async function initCheckout() {
                     enableStoreDetails: true,
                     name: "Credit or debit card",
                     onConfigSuccess: (component) => {
-                        console.log("callback triggered");
-                        const activePM = dropin.componentRef;
-                        if (activePM.props.type === 'card') {
-                            activePM.setFocusOn('encryptedCardNumber');
-                        }
+                        console.log("Card component configured successfully");
                     },
                     amount: {
                         value: 1000,
@@ -56,7 +66,7 @@ async function initCheckout() {
                 }
             },
             onSubmit: (state, component) => {
-                console.log(state);
+                console.log("on submit triggered", state);
                 if (state.isValid) {
                     handleSubmission(state, component, "/api/initiatePayment");
                 }
@@ -77,7 +87,7 @@ async function initCheckout() {
         const checkout = await AdyenCheckout(configuration);
         checkout.create(type, {
             // Optional configuration
-            type: 'card',
+            // type: 'card',
             // brands: ['mc', 'visa', 'amex', 'bcmc', 'maestro'],
             // styles: {
             //     error: {
@@ -91,9 +101,8 @@ async function initCheckout() {
             //         fontWeight: "500"
             //     }
             // },
-            // Set focus immediately to encryptedCardNumber field
             onSelect: comp => {
-                comp?.setFocusOn?.('encryptedCardNumber');
+                console.log("onSelect Triggered", state);
             },
             onBinLookup: (state) => {
                 console.log("onBinLookup Triggered", state);
@@ -132,6 +141,7 @@ function filterUnimplemented(pm) {
             "boletobancario_santander",
             "twint",
             "applepay",
+            "googlepay",
             "bcmc",
             "bcmc_mobile",
             'kcp_naverpay',

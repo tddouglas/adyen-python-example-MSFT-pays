@@ -64,6 +64,9 @@
                             <!-- Component will be rendered here -->
                         </div>
                     {% endif %}
+                    {% if method == 'googlepay' %}
+                        <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+                    {% endif %}
                     <script src="https://checkoutshopper-live.adyen.com/checkoutshopper/sdk/5.25.0/adyen.js"
                             crossorigin="anonymous"></script>
                     <script id="client-key" type="application/json">{{ client_key|tojson }}</script>
